@@ -29,4 +29,23 @@ public class PostStore {
     public void add(Post post) {
         this.posts.put(post.getId(), post);
     }
+
+    public Post findById(int id) {
+        for (Post post : posts.values()) {
+            if (id == post.getId()) {
+                return post;
+            }
+        }
+        return null;
+    }
+
+    public void update(Post newPost) {
+        for (Post post : posts.values()) {
+            if (newPost.getId() == post.getId()) {
+                post.setName(newPost.getName());
+                post.setDescription(newPost.getDescription());
+                post.setCreated(newPost.getCreated());
+            }
+        }
+    }
 }
