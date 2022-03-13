@@ -2,6 +2,8 @@ package ru.job4j.dreamjob.store;
 
 import ru.job4j.dreamjob.model.Post;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,6 +29,7 @@ public class PostStore {
     }
 
     public void add(Post post) {
+        post.setCreated(getCurrentTime());
         this.posts.put(post.getId(), post);
     }
 
@@ -44,8 +47,14 @@ public class PostStore {
             if (newPost.getId() == post.getId()) {
                 post.setName(newPost.getName());
                 post.setDescription(newPost.getDescription());
-                post.setCreated(newPost.getCreated());
+                post.setCreated(getCurrentTime());
             }
         }
+    }
+
+    public String getCurrentTime() {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeFormatter myFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+        return localDateTime.format(myFormat);
     }
 }
