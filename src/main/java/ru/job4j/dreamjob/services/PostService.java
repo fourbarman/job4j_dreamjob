@@ -1,5 +1,6 @@
 package ru.job4j.dreamjob.services;
 
+import org.springframework.stereotype.Service;
 import ru.job4j.dreamjob.model.Post;
 import ru.job4j.dreamjob.persistence.PostStore;
 
@@ -9,7 +10,6 @@ import java.util.Collection;
 
 /**
  * PostService.
- * Singleton.
  * <p>
  * Service layer.
  *
@@ -17,20 +17,13 @@ import java.util.Collection;
  * @version %I%, %G%.
  * @since 14.03.2022.
  */
+@Service
 public class PostService {
 
-    private static final PostService INST = new PostService();
+    private final PostStore posts;
 
-    private final PostStore posts = new PostStore();
-
-    private PostService() {
-        posts.add(new Post(1, "Junior Java Job", "desc for junior", "01.03.2022"));
-        posts.add(new Post(2, "Middle Java Job", "desc for middle", "02.02.2022"));
-        posts.add(new Post(3, "Senior Java Job", "desc for senior", "03.03.2022"));
-    }
-
-    public static PostService instOf() {
-        return INST;
+    public PostService(PostStore postStore) {
+        this.posts = postStore;
     }
 
     public Collection<Post> findAll() {

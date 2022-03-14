@@ -1,5 +1,6 @@
 package ru.job4j.dreamjob.services;
 
+import org.springframework.stereotype.Service;
 import ru.job4j.dreamjob.model.Candidate;
 import ru.job4j.dreamjob.persistence.CandidateStore;
 
@@ -9,7 +10,6 @@ import java.util.Collection;
 
 /**
  * CandidateService.
- * Singleton.
  * <p>
  * Service layer.
  *
@@ -17,19 +17,12 @@ import java.util.Collection;
  * @version %I%, %G%.
  * @since 14.03.2022.
  */
+@Service
 public class CandidateService {
-    private static final CandidateService INST = new CandidateService();
 
-    private final CandidateStore candidates = new CandidateStore();
-
-    private CandidateService() {
-        candidates.add(new Candidate(1, "John", "apply for junior", "04.03.2022"));
-        candidates.add(new Candidate(2, "Max", "apply for middle", "05.02.2022"));
-        candidates.add(new Candidate(3, "George", "apply for senior", "06.03.2022"));
-    }
-
-    public static CandidateService instOf() {
-        return INST;
+    private final CandidateStore candidates;
+    public CandidateService(CandidateStore candidateStore) {
+        this.candidates = candidateStore;
     }
 
     public Collection<Candidate> findAll() {
