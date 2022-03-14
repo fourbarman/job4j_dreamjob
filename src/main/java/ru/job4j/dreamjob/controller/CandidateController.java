@@ -7,15 +7,23 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.job4j.dreamjob.model.Candidate;
-import ru.job4j.dreamjob.store.CandidateStore;
+import ru.job4j.dreamjob.services.CandidateService;
 
+/**
+ * CandidateController.
+ * Control layer.
+ *
+ * @author fourbarman (maks.java@yandex.ru).
+ * @version %I%, %G%.
+ * @since 14.03.2022.
+ */
 @Controller
 public class CandidateController {
-    private final CandidateStore candidateStore = CandidateStore.instOf();
+    private final CandidateService candidateService = CandidateService.instOf();
 
     @GetMapping("/candidates")
     public String candidates(Model model) {
-        model.addAttribute("candidates", candidateStore.findAll());
+        model.addAttribute("candidates", candidateService.findAll());
         return "candidates";
     }
 
@@ -32,25 +40,25 @@ public class CandidateController {
 
     @PostMapping("/saveCandidate")
     public String saveCandidate(@ModelAttribute Candidate candidate) {
-        candidateStore.add(candidate);
+        candidateService.add(candidate);
         return "redirect:/candidates";
     }
 
     @GetMapping("/formUpdateCandidate/{candidateId}")
     public String formUpdateCandidate(Model model, @PathVariable("candidateId") int id) {
-        model.addAttribute("candidate", candidateStore.findById(id));
+        model.addAttribute("candidate", candidateService.findById(id));
         return "updateCandidate";
     }
 
     @PostMapping("/updateCandidate")
     public String updateCandidate(@ModelAttribute Candidate candidate) {
-        candidateStore.update(candidate);
+        candidateService.update(candidate);
         return "redirect:/candidates";
     }
 
     @PostMapping("/createCandidate")
     public String createCandidate(@ModelAttribute Candidate candidate) {
-        candidateStore.add(candidate);
+        candidateService.add(candidate);
         return "redirect:/candidates";
     }
 }

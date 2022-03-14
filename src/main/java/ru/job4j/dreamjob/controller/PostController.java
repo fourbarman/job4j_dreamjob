@@ -7,11 +7,18 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.job4j.dreamjob.model.Post;
-import ru.job4j.dreamjob.store.PostStore;
-
+import ru.job4j.dreamjob.services.PostService;
+/**
+ * PostController.
+ * Control layer.
+ *
+ * @author fourbarman (maks.java@yandex.ru).
+ * @version %I%, %G%.
+ * @since 14.03.2022.
+ */
 @Controller
 public class PostController {
-    private final PostStore store = PostStore.instOf();
+    private final PostService store = PostService.instOf();
 
     @GetMapping("/posts")
     public String posts(Model model) {
