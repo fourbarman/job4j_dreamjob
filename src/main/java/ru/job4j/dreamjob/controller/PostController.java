@@ -1,5 +1,6 @@
 package ru.job4j.dreamjob.controller;
 
+import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import ru.job4j.dreamjob.services.PostService;
  * @version %I%, %G%.
  * @since 14.03.2022.
  */
+@ThreadSafe
 @Controller
 public class PostController {
     private final PostService postService;
