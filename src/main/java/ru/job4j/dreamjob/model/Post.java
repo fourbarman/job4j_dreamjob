@@ -1,22 +1,27 @@
 package ru.job4j.dreamjob.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Post
  * model.
  */
-public class Post {
+public class Post implements Serializable {
     private int id;
     private String name;
     private String description;
     private String created;
 
-    public Post(int id, String name, String description, String created) {
+    private City city;
+    private boolean visible;
+
+    public Post(int id, String name, String description, String created, City city) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.created = created;
+        this.city = city;
     }
 
     public int getId() {
@@ -66,5 +71,17 @@ public class Post {
 
     public void setCreated(String created) {
         this.created = created;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
+
+    public String toString() {
+        return id + " " + name + " " + description + " " + created + " " + city.getName();
     }
 }
