@@ -12,16 +12,16 @@ public class Post implements Serializable {
     private String name;
     private String description;
     private String created;
-
     private City city;
     private boolean visible;
 
-    public Post(int id, String name, String description, String created, City city) {
+    public Post(int id, String name, String description, String created, City city, boolean visible) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.created = created;
         this.city = city;
+        this.visible = visible;
     }
 
     public int getId() {
@@ -81,7 +81,16 @@ public class Post implements Serializable {
         this.city = city;
     }
 
+    public boolean getVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+
     public String toString() {
-        return id + " " + name + " " + description + " " + created + " " + city.getName();
+        return id + " " + name + " " + description + " " + created + " " + visible + " " + city.getName();
     }
 }

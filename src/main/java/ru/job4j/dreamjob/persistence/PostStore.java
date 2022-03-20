@@ -33,21 +33,24 @@ public class PostStore {
                         "Junior Java Job",
                         "desc for junior",
                         "01.03.2022",
-                        new City(1, "Город 1")
+                        new City(1, "Город 1"),
+                        true
                 ));
         posts.putIfAbsent(2,
                 new Post(2,
                         "Middle Java Job",
                         "desc for middle",
                         "02.02.2022",
-                        new City(2, "Город 2")
+                        new City(2, "Город 2"),
+                        true
                 ));
         posts.putIfAbsent(3,
                 new Post(3,
                         "Senior Java Job",
                         "desc for senior",
                         "03.03.2022",
-                        new City(3, "Город 3")
+                        new City(3, "Город 3"),
+                        true
                 ));
     }
 
