@@ -40,7 +40,7 @@ public class CandidateStore {
         candidates.putIfAbsent(candidate.getId(), candidate);
     }
 
-    public Object findById(int id) {
+    public Candidate findById(int id) {
         return candidates.get(id);
     }
 

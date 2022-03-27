@@ -8,6 +8,16 @@ public class Candidate {
     private String desc;
     private String created;
 
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
+
+    private byte[] photo;
+
     public Candidate(int id, String name, String desc, String created) {
         this.id = id;
         this.name = name;

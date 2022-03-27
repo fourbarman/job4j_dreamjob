@@ -38,7 +38,7 @@ public class CandidateService {
         }
     }
 
-    public Object findById(int id) {
+    public Candidate findById(int id) {
         return candidates.findById(id);
     }
 
