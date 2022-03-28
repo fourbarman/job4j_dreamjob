@@ -25,10 +25,10 @@ public class PostDBStore {
                 .append("join cities c on pc.city_id = c.id;")
                 .toString();
         List<Post> posts = new ArrayList<>();
-        try(Connection cn = pool.getConnection();
+        try (Connection cn = pool.getConnection();
                 PreparedStatement ps = cn.prepareStatement(query)) {
-            try(ResultSet it = ps.executeQuery()) {
-                while(it.next()) {
+            try (ResultSet it = ps.executeQuery()) {
+                while (it.next()) {
                     posts.add(new Post(
                             it.getInt("id"),
                             it.getString("name"),
