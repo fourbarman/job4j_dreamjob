@@ -16,12 +16,6 @@ import java.util.Properties;
  * @version %I%, %G%.
  * @since 14.03.2022.
  */
-//@SpringBootApplication
-//public class Main {
-//    public static void main(String[] args) {
-//        SpringApplication.run(Main.class, args);
-//    }
-//}
 @SpringBootApplication
 public class Main {
 
