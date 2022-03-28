@@ -3,6 +3,7 @@ package ru.job4j.dreamjob.services;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Service;
 import ru.job4j.dreamjob.model.Post;
+import ru.job4j.dreamjob.persistence.PostDBStore;
 import ru.job4j.dreamjob.persistence.PostStore;
 
 import java.time.LocalDateTime;
@@ -22,10 +23,10 @@ import java.util.Collection;
 @Service
 public class PostService {
 
-    private final PostStore posts;
+    private final PostDBStore posts;
 
-    public PostService(PostStore postStore) {
-        this.posts = postStore;
+    public PostService(PostDBStore postDbStore) {
+        this.posts = postDbStore;
     }
 
     public Collection<Post> findAll() {

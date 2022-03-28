@@ -1,0 +1,1 @@
+select cities.name as c, posts.name as p from post_city, cities, posts;
