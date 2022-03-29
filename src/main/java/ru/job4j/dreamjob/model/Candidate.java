@@ -1,5 +1,6 @@
 package ru.job4j.dreamjob.model;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Candidate {
@@ -72,5 +73,16 @@ public class Candidate {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, desc, created);
+    }
+
+    @Override
+    public String toString() {
+        return "Candidate{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", desc='" + desc + '\'' +
+                ", created='" + created + '\'' +
+                ", photo=" + Arrays.toString(photo) +
+                '}';
     }
 }

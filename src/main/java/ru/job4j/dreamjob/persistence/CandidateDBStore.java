@@ -3,7 +3,6 @@ package ru.job4j.dreamjob.persistence;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.Candidate;
-import ru.job4j.dreamjob.model.Post;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -25,12 +24,13 @@ public class CandidateDBStore {
             PreparedStatement ps = cn.prepareStatement(query)) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
-                    candidates.add(new Candidate(
+                    Candidate candidate = new Candidate(
                             it.getInt("id"),
                             it.getString("name"),
                             it.getString("description"),
-                            it.getString("created")
-                    ));
+                            it.getString("created"));
+                    candidate.setPhoto(it.getBytes("photo"));
+                    candidates.add(candidate);
                 }
             }
         } catch (SQLException throwables) {
@@ -40,12 +40,15 @@ public class CandidateDBStore {
     }
 
     public Candidate add(Candidate candidate) {
-        String query = "insert into candidates(name) values (?)";
+        String query = "insert into candidates(name, description, created, photo) values (?, ?, ?, ?)";
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement(query,
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, candidate.getName());
+            ps.setString(2, candidate.getDesc());
+            ps.setTimestamp(3, Timestamp.valueOf(candidate.getCreated()));
+            ps.setBytes(4, candidate.getPhoto());
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -64,6 +67,7 @@ public class CandidateDBStore {
                 .append("SET name = ?, ")
                 .append("description = ?, ")
                 .append("created = ?, ")
+                .append("photo = ? ")
                 .append("where id = ?;")
                 .toString();
         try (Connection cn = pool.getConnection();
@@ -71,26 +75,30 @@ public class CandidateDBStore {
             ps.setString(1, candidate.getName());
             ps.setString(2, candidate.getDesc());
             ps.setObject(3, Timestamp.valueOf(candidate.getCreated()));
-            ps.setInt(4, candidate.getId());
+            ps.setBytes(4, candidate.getPhoto());
+            ps.setInt(5, candidate.getId());
+            ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public Candidate findById(int id) {
-        String query = "select * from candidates c where c.id = 'id'";
+        String query = "select * from candidates c where c.id = ?";
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement(query)
         ) {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    return new Candidate(
+                    Candidate candidate = new Candidate(
                             it.getInt("id"),
                             it.getString("name"),
                             it.getString("description"),
                             it.getString("created")
                     );
+                    candidate.setPhoto(it.getBytes("photo"));
+                    return candidate;
                 }
             }
         } catch (Exception e) {

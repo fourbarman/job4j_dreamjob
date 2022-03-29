@@ -40,9 +40,6 @@ public class PostDBStore {
                     ));
                 }
             }
-            for (Post p : posts) {
-                System.out.println(p);
-            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -51,7 +48,7 @@ public class PostDBStore {
 
     public Post add(Post post) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("INSERT INTO posts(name) VALUES (?)",
+             PreparedStatement ps = cn.prepareStatement("insert into posts (name, description, created, visible) values (?, ?, ?, ?)",
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, post.getName());

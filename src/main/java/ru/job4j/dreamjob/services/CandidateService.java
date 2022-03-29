@@ -3,6 +3,7 @@ package ru.job4j.dreamjob.services;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Service;
 import ru.job4j.dreamjob.model.Candidate;
+import ru.job4j.dreamjob.persistence.CandidateDBStore;
 import ru.job4j.dreamjob.persistence.CandidateStore;
 
 import java.time.LocalDateTime;
@@ -22,9 +23,9 @@ import java.util.Collection;
 @Service
 public class CandidateService {
 
-    private final CandidateStore candidates;
-    public CandidateService(CandidateStore candidateStore) {
-        this.candidates = candidateStore;
+    private final CandidateDBStore candidates;
+    public CandidateService(CandidateDBStore candidateDBStore) {
+        this.candidates = candidateDBStore;
     }
 
     public Collection<Candidate> findAll() {
@@ -51,7 +52,7 @@ public class CandidateService {
 
     public String getCurrentTime() {
         LocalDateTime localDateTime = LocalDateTime.now();
-        DateTimeFormatter myFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+        DateTimeFormatter myFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
         return localDateTime.format(myFormat);
     }
 }
