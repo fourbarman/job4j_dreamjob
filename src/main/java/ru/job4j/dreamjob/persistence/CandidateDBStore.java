@@ -3,11 +3,9 @@ package ru.job4j.dreamjob.persistence;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.Candidate;
+import ru.job4j.dreamjob.model.Post;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +59,22 @@ public class CandidateDBStore {
     }
 
     public void update(Candidate candidate) {
+        String query = new StringBuilder()
+                .append("UPDATE candidates ")
+                .append("SET name = ?, ")
+                .append("description = ?, ")
+                .append("created = ?, ")
+                .append("where id = ?;")
+                .toString();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement(query)) {
+            ps.setString(1, candidate.getName());
+            ps.setString(2, candidate.getDesc());
+            ps.setObject(3, Timestamp.valueOf(candidate.getCreated()));
+            ps.setInt(4, candidate.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public Candidate findById(int id) {

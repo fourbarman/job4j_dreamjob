@@ -64,14 +64,37 @@ public class PostDBStore {
     }
 
     public void update(Post post) {
+        String query = new StringBuilder()
+                .append("UPDATE posts ")
+                .append("SET name = ?, ")
+                .append("description = ?, ")
+                .append("created = ?, ")
+                .append("visible = ? ")
+                .append("where id = ?;")
+                .append("UPDATE post_city ")
+                .append("SET city_id = ? ")
+                .append("where post_id = ?;")
+                .toString();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement(query)) {
+            ps.setString(1, post.getName());
+            ps.setString(2, post.getDescription());
+            ps.setObject(3, Timestamp.valueOf(post.getCreated()));
+            ps.setBoolean(4, post.getVisible());
+            ps.setInt(5, post.getId());
+            ps.setInt(6, post.getCity().getId());
+            ps.setInt(7, post.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public Post findById(int id) {
         String query = new StringBuilder()
-                .append("select p.id, p.name, description, created, visible, c.id, c.name from posts p")
-                .append("join post_city pc on p.id = pc.post_id")
-                .append("join cities c on pc.city_id = c.id;")
-                .append("where id = ?;")
+                .append("select p.id, p.name, description, created, visible, c.id, c.name from posts p ")
+                .append("join post_city pc on p.id = pc.post_id ")
+                .append("join cities c on pc.city_id = c.id ")
+                .append("where p.id = ?;")
                 .toString();
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement(query)
