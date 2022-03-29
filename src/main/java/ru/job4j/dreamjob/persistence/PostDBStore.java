@@ -26,7 +26,7 @@ public class PostDBStore {
                 .toString();
         List<Post> posts = new ArrayList<>();
         try (Connection cn = pool.getConnection();
-                PreparedStatement ps = cn.prepareStatement(query)) {
+             PreparedStatement ps = cn.prepareStatement(query)) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
                     posts.add(new Post(
@@ -47,7 +47,7 @@ public class PostDBStore {
 
     public Post add(Post post) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("INSERT INTO posts(name) VALUES (?)",
+             PreparedStatement ps = cn.prepareStatement("INSERT INTO posts(name) VALUES (?)",
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, post.getName());
@@ -63,6 +63,11 @@ public class PostDBStore {
         return post;
     }
 
+    /**
+     * Update post.
+     *
+     * @param post Post.
+     */
     public void update(Post post) {
         String query = new StringBuilder()
                 .append("UPDATE posts ")
@@ -76,7 +81,7 @@ public class PostDBStore {
                 .append("where post_id = ?;")
                 .toString();
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement(query)) {
+             PreparedStatement ps = cn.prepareStatement(query)) {
             ps.setString(1, post.getName());
             ps.setString(2, post.getDescription());
             ps.setObject(3, Timestamp.valueOf(post.getCreated()));
@@ -97,7 +102,7 @@ public class PostDBStore {
                 .append("where p.id = ?;")
                 .toString();
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement(query)
+             PreparedStatement ps = cn.prepareStatement(query)
         ) {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
