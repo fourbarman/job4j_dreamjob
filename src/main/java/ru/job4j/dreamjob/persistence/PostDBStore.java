@@ -20,8 +20,9 @@ public class PostDBStore {
 
     public List<Post> findAll() {
         String query = new StringBuilder()
-                .append("select p.id, p.name, description, created, visible, c.id, c.name from posts p")
-                .append("join post_city pc on p.id = pc.post_id")
+                .append("select p.id as p_id, p.name as p_name, description, ")
+                .append("created, visible, c.id as c_id, c.name as c_name from posts p ")
+                .append("join post_city pc on p.id = pc.post_id ")
                 .append("join cities c on pc.city_id = c.id;")
                 .toString();
         List<Post> posts = new ArrayList<>();
@@ -30,14 +31,17 @@ public class PostDBStore {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
                     posts.add(new Post(
-                            it.getInt("id"),
-                            it.getString("name"),
+                            it.getInt("p_id"),
+                            it.getString("p_name"),
                             it.getString("description"),
                             it.getString("created"),
-                            new City(it.getInt("c.id"), it.getString("c.name")),
+                            new City(it.getInt("c_id"), it.getString("c_name")),
                             it.getBoolean("visible")
                     ));
                 }
+            }
+            for (Post p : posts) {
+                System.out.println(p);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();

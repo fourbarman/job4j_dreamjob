@@ -30,5 +30,6 @@ create table if not exists candidates
     id          serial primary key,
     name        text,
     description text,
-    created     timestamp
+    created     timestamp,
+    photo bytea
 );
