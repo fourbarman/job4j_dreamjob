@@ -77,12 +77,12 @@ public class Candidate {
 
     @Override
     public String toString() {
-        return "Candidate{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", desc='" + desc + '\'' +
-                ", created='" + created + '\'' +
-                ", photo=" + Arrays.toString(photo) +
-                '}';
+        return "Candidate{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", desc='" + desc + '\''
+                + ", created='" + created + '\''
+                + ", photo=" + Arrays.toString(photo)
+                + '}';
     }
 }
