@@ -10,3 +10,5 @@ values
 ('Tana Wiley', 'Tana Wiley candidate description', '11-12-2021 16:16:16'),
 ('Craig Kirby', 'Craig Kirby candidate description', '12-12-2021 17:17:17'),
 ('Isadora Gregory', 'Isadora Gregory candidate description', '13-12-2021 20:20:20');
+
+update candidates set photo = pg_read_binary_file('D:\noface.jpg') where id between 0 and 100;

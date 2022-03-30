@@ -19,23 +19,26 @@ public class PostDBStore {
     }
 
     public List<Post> findAll() {
-        String query = new StringBuilder()
-                .append("select p.id as p_id, p.name as p_name, description, ")
-                .append("created, visible, c.id as c_id, c.name as c_name from posts p ")
-                .append("join post_city pc on p.id = pc.post_id ")
-                .append("join cities c on pc.city_id = c.id;")
-                .toString();
+        String query = "select posts.id as pid, \n"
+                + "posts.name as pname, \n"
+                + "posts.description as pdesc, \n"
+                + "created as pcreated, \n"
+                + "visible, \n"
+                + "city_id as cid, \n"
+                + "cities.name as cname \n"
+                + "from posts, cities \n"
+                + "where posts.city_id = cities.id;";
         List<Post> posts = new ArrayList<>();
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(query)) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
                     posts.add(new Post(
-                            it.getInt("p_id"),
-                            it.getString("p_name"),
-                            it.getString("description"),
-                            it.getString("created"),
-                            new City(it.getInt("c_id"), it.getString("c_name")),
+                            it.getInt("pid"),
+                            it.getString("pname"),
+                            it.getString("pdesc"),
+                            it.getString("pcreated"),
+                            new City(it.getInt("cid"), it.getString("cname")),
                             it.getBoolean("visible")
                     ));
                 }
@@ -48,10 +51,15 @@ public class PostDBStore {
 
     public Post add(Post post) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("insert into posts (name, description, created, visible) values (?, ?, ?, ?)",
+             PreparedStatement ps = cn.prepareStatement("insert into posts (name, description, created, city_id, visible) values (?, ?, ?, ?, ?)",
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, post.getName());
+            ps.setString(2, post.getDescription());
+            ps.setObject(3, Timestamp.valueOf(post.getCreated()));
+            ps.setInt(4, post.getCity().getId());
+            ps.setBoolean(5, post.getVisible());
+
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -75,11 +83,9 @@ public class PostDBStore {
                 .append("SET name = ?, ")
                 .append("description = ?, ")
                 .append("created = ?, ")
-                .append("visible = ? ")
+                .append("visible = ?, ")
+                .append("city_id = ? ")
                 .append("where id = ?;")
-                .append("UPDATE post_city ")
-                .append("SET city_id = ? ")
-                .append("where post_id = ?;")
                 .toString();
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(query)) {
@@ -87,8 +93,7 @@ public class PostDBStore {
             ps.setString(2, post.getDescription());
             ps.setObject(3, Timestamp.valueOf(post.getCreated()));
             ps.setBoolean(4, post.getVisible());
-            ps.setInt(5, post.getId());
-            ps.setInt(6, post.getCity().getId());
+            ps.setInt(5, post.getCity().getId());
             ps.setInt(7, post.getId());
         } catch (Exception e) {
             e.printStackTrace();
@@ -96,12 +101,8 @@ public class PostDBStore {
     }
 
     public Post findById(int id) {
-        String query = new StringBuilder()
-                .append("select p.id, p.name, description, created, visible, c.id, c.name from posts p ")
-                .append("join post_city pc on p.id = pc.post_id ")
-                .append("join cities c on pc.city_id = c.id ")
-                .append("where p.id = ?;")
-                .toString();
+        String query = "select posts.id as pid, posts.name as pname, description, created, visible, city_id, cities.name as cname " +
+                "from posts, cities where posts.id = ? and city_id = cities.id";
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(query)
         ) {
@@ -109,11 +110,11 @@ public class PostDBStore {
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
                     return new Post(
-                            it.getInt("id"),
-                            it.getString("name"),
+                            it.getInt("pid"),
+                            it.getString("pname"),
                             it.getString("description"),
                             it.getString("created"),
-                            new City(it.getInt("c.id"), it.getString("c.name")),
+                            new City(it.getInt("city_id"), it.getString("cname")),
                             it.getBoolean("visible")
                     );
                 }

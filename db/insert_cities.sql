@@ -3,5 +3,5 @@ values
 ('Coahuila'),
 ('Troms og Finnmark'),
 ('New South Wales'),
-('Castilla y León'),
+('Castilla y Leon'),
 ('Arunachal Pradesh');

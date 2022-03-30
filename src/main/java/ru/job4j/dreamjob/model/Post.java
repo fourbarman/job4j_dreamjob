@@ -91,6 +91,6 @@ public class Post implements Serializable {
 
 
     public String toString() {
-        return id + " " + name + " " + description + " " + created + " " + visible + " " + city.getName();
+        return id + " " + name + " " + description + " " + created + " " + visible + " " + city.getId() + " " + city.getName();
     }
 }

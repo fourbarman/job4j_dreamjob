@@ -51,7 +51,7 @@ public class PostService {
 
     public String getCurrentTime() {
         LocalDateTime localDateTime = LocalDateTime.now();
-        DateTimeFormatter myFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+        DateTimeFormatter myFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
         return localDateTime.format(myFormat);
     }
 }
