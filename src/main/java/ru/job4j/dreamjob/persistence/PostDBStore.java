@@ -101,8 +101,8 @@ public class PostDBStore {
     }
 
     public Post findById(int id) {
-        String query = "select posts.id as pid, posts.name as pname, description, created, visible, city_id, cities.name as cname " +
-                "from posts, cities where posts.id = ? and city_id = cities.id";
+        String query = "select posts.id as pid, posts.name as pname, description, created, visible, city_id, cities.name as cname "
+                + "from posts, cities where posts.id = ? and city_id = cities.id";
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(query)
         ) {
