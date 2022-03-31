@@ -42,6 +42,18 @@ public class PostDBStoreTest {
         PostDBStore store = new PostDBStore(new Main().loadPool());
         Post post1 = new Post(111, "Second", "desc", "2020-12-10 15:15:15", new City(1, "CityName"), true);
         Post storedPost1 = store.add(post1);
+        assertThat(store.findById(storedPost1.getId()).getName(), is(storedPost1.getName()));
+    }
 
+    @Test
+    public void whenUpdatePost() {
+        CityDBStore cities = new CityDBStore(new Main().loadPool());
+        cities.add(new City(1, "testCity"));
+        PostDBStore store = new PostDBStore(new Main().loadPool());
+        Post post1 = new Post(111, "Second", "desc", "2020-12-10 15:15:15", new City(1, "CityName"), true);
+        Post storedPost1 = store.add(post1);
+        storedPost1.setName("new_name");
+        store.update(storedPost1);
+        assertThat(store.findById(storedPost1.getId()).getName(), is("new_name"));
     }
 }

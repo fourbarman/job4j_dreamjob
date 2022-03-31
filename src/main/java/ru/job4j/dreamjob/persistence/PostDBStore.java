@@ -19,14 +19,14 @@ public class PostDBStore {
     }
 
     public List<Post> findAll() {
-        String query = "select posts.id as pid, \n"
-                + "posts.name as pname, \n"
-                + "posts.description as pdesc, \n"
-                + "created as pcreated, \n"
-                + "visible, \n"
-                + "city_id as cid, \n"
-                + "cities.name as cname \n"
-                + "from posts, cities \n"
+        String query = "select posts.id as pid, "
+                + "posts.name as pname, "
+                + "posts.description as pdesc, "
+                + "created as pcreated, "
+                + "visible, "
+                + "city_id as cid, "
+                + "cities.name as cname "
+                + "from posts, cities "
                 + "where posts.city_id = cities.id;";
         List<Post> posts = new ArrayList<>();
         try (Connection cn = pool.getConnection();
@@ -51,7 +51,8 @@ public class PostDBStore {
 
     public Post add(Post post) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("insert into posts (name, description, created, city_id, visible) values (?, ?, ?, ?, ?)",
+             PreparedStatement ps = cn.prepareStatement("insert into posts "
+                             + "(name, description, created, city_id, visible) values (?, ?, ?, ?, ?)",
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, post.getName());
@@ -78,30 +79,24 @@ public class PostDBStore {
      * @param post Post.
      */
     public void update(Post post) {
-        String query = new StringBuilder()
-                .append("UPDATE posts ")
-                .append("SET name = ?, ")
-                .append("description = ?, ")
-                .append("created = ?, ")
-                .append("visible = ?, ")
-                .append("city_id = ? ")
-                .append("where id = ?;")
-                .toString();
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement(query)) {
+             PreparedStatement ps = cn.prepareStatement("UPDATE posts "
+                     + "SET name = ?, description = ?, created = ?, visible = ?, city_id = ? where id = ?")) {
             ps.setString(1, post.getName());
             ps.setString(2, post.getDescription());
             ps.setObject(3, Timestamp.valueOf(post.getCreated()));
             ps.setBoolean(4, post.getVisible());
             ps.setInt(5, post.getCity().getId());
-            ps.setInt(7, post.getId());
+            ps.setInt(6, post.getId());
+            ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public Post findById(int id) {
-        String query = "select posts.id as pid, posts.name as pname, description, created, visible, city_id, cities.name as cname "
+        String query = "select posts.id as pid, posts.name as pname, description, "
+                + "created, visible, city_id, cities.name as cname "
                 + "from posts, cities where posts.id = ? and city_id = cities.id";
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(query)
