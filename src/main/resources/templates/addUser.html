@@ -37,6 +37,7 @@
                 <a class="nav-item nav-link" th:href="@{/addCandidate}">Добавить кандидата</a>
                 <a class="nav-item nav-link" th:href="@{/cities}">Города</a>
                 <a class="nav-item nav-link" th:href="@{/addCity}">Добавить город</a>
+                <a class="nav-item nav-link" th:href="@{/users}">Пользователи</a>
                 <a class="nav-item nav-link active" href=#>Добавить пользователя<span class="sr-only">(current)</span></a>
             </div>
         </div>
@@ -50,7 +51,7 @@
                 <form th:action="@{/createUser}" method="POST">
                     <div class="form-group">
                         <input type="hidden" name="id" value="0"/>
-                        <label for="email">Имя</label>
+                        <label for="email">email</label>
                         <input type="text" class="form-control" name="email" id="email">
                         <label for="password">Пароль</label>
                         <input type="text" class="form-control" name="password" id="password">

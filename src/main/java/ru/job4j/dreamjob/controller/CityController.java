@@ -29,7 +29,7 @@ public class CityController {
 
     @GetMapping("/formAddCity")
     public String formAddCity(Model model) {
-        return "addPost";
+        return "addCity";
     }
 
     @PostMapping("/saveCity")
