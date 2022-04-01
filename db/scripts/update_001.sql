@@ -27,3 +27,10 @@ create table if not exists candidates
     created     timestamp,
     photo       bytea
 );
+
+create table if not exists users
+(
+    id serial primary key,
+    email varchar constraint email_unique unique,
+    password varchar
+);
