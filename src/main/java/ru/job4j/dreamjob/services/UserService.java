@@ -7,6 +7,7 @@ import ru.job4j.dreamjob.persistence.UserDBStore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @ThreadSafe
 @Service
@@ -25,7 +26,7 @@ public class UserService {
         return this.store.findById(id);
     }
 
-    public User add(User user) {
+    public Optional<User> add(User user) {
         return this.store.add(user);
     }
 

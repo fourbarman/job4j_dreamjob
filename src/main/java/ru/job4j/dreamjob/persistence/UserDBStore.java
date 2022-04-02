@@ -8,6 +8,7 @@ import ru.job4j.dreamjob.model.User;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserDBStore {
@@ -38,7 +39,7 @@ public class UserDBStore {
         return users;
     }
 
-    public User add(User user) {
+    public Optional<User> add(User user) {
         String query = "insert into users(email, password) values (?, ?)";
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(query,
@@ -52,9 +53,9 @@ public class UserDBStore {
                 }
             }
         } catch (Exception throwables) {
-            return null;
+            return Optional.empty();
         }
-        return user;
+        return Optional.of(user);
     }
 
     public void update(User user) {
