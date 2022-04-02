@@ -52,7 +52,7 @@ public class UserDBStore {
                 }
             }
         } catch (Exception throwables) {
-            throwables.printStackTrace();
+            return null;
         }
         return user;
     }

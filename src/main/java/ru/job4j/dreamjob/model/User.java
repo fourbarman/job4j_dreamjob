@@ -48,8 +48,12 @@ public class User {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         User user = (User) o;
         return id == user.id && Objects.equals(email, user.email) && Objects.equals(password, user.password);
     }
@@ -59,13 +63,12 @@ public class User {
         return Objects.hash(id, email, password);
     }
 
-
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        return "User{"
+                + "id=" + id
+                + ", email='" + email + '\''
+                + ", password='" + password + '\''
+                + '}';
     }
 }

@@ -65,9 +65,13 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @PostMapping("/createUser")
-    public String createUser(@ModelAttribute User user) {
-        userService.add(user);
-        return "redirect:/users";
+    @GetMapping("/success")
+    public String success(Model model) {
+        return "success";
+    }
+
+    @GetMapping("/fail")
+    public String fail(Model model) {
+        return "fail";
     }
 }
