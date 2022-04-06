@@ -31,6 +31,7 @@ create table if not exists candidates
 create table if not exists users
 (
     id serial primary key,
+    name varchar,
     email varchar constraint email_unique unique,
     password varchar
 );

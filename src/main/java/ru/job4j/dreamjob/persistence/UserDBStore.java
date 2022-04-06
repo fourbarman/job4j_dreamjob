@@ -40,7 +40,7 @@ public class UserDBStore {
     }
 
     public Optional<User> add(User user) {
-        String query = "insert into users(email, name, password) values (?, ?, ?)";
+        String query = "insert into users(name, email, password) values (?, ?, ?)";
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(query,
                      PreparedStatement.RETURN_GENERATED_KEYS)) {
