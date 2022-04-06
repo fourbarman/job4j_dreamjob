@@ -51,6 +51,8 @@
                 <form th:action="@{/updateUser}" method="POST"  th:object="${user}">
                     <div class="form-group">
                         <input type="hidden" name="id" th:field="*{id}"/>
+                        <label for="name">userName</label>
+                        <input type="text" class="form-control" name="email" id="name"  th:field="*{name}">
                         <label for="email">email</label>
                         <input type="text" class="form-control" name="email" id="email"  th:field="*{email}">
                         <label for="password">Пароль</label>

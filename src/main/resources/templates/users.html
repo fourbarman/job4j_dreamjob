@@ -40,6 +40,14 @@
                 <a class="nav-item nav-link" th:href="@{/addCity}">Добавить город</a>
                 <a class="nav-item nav-link active" href=#>Пользователи<span class="sr-only">(current)</span></a>
                 <a class="nav-item nav-link" th:href="@{/addUser}">Добавить пользователя</a>
+                <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/loginPage}">
+                    <span th:text="${user.name}"></span>
+                    <span> | Войти</span>
+                </a>
+                <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/logout}">
+                    <span th:text="${user.name}"></span>
+                    <span> | Выйти</span>
+                </a>
             </div>
         </div>
     </nav>
@@ -48,6 +56,7 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
+                <th scope="col">name</th>
                 <th scope="col">email</th>
                 <th scope="col">password</th>
             </tr>
@@ -59,7 +68,8 @@
                     <a th:href="@{|/formUpdateUser/${user.id}|}">
                         <i class="fa fa-edit"></i>
                     </a>
-                    <span th:text="${user.email}"></span>
+                    <span th:text="${user.name}"></span>
+                <td th:text="${user.email}" />
                 <td th:text="${user.password}" />
                 </td>
             </tr>

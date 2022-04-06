@@ -26,6 +26,7 @@ public class UserDBStore {
                 while (it.next()) {
                     users.add(new User(
                             it.getInt("id"),
+                            it.getString("name"),
                             it.getString("email"),
                             it.getString("password")
                             )
@@ -39,12 +40,13 @@ public class UserDBStore {
     }
 
     public Optional<User> add(User user) {
-        String query = "insert into users(email, password) values (?, ?)";
+        String query = "insert into users(email, name, password) values (?, ?, ?)";
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(query,
                      PreparedStatement.RETURN_GENERATED_KEYS)) {
-            ps.setString(1, user.getEmail());
-            ps.setString(2, user.getPassword());
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -58,12 +60,13 @@ public class UserDBStore {
     }
 
     public void update(User user) {
-        String query = "update users set email = ?, password = ? where id = ?";
+        String query = "update users set name = ?, email = ?, password = ? where id = ?";
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(query)) {
-            ps.setString(1, user.getEmail());
-            ps.setString(2, user.getPassword());
-            ps.setInt(3, user.getId());
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
+            ps.setInt(4, user.getId());
             ps.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -77,7 +80,9 @@ public class UserDBStore {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    User user = new User(rs.getInt("id"),
+                    User user = new User(
+                            rs.getInt("id"),
+                            rs.getString("name"),
                             rs.getString("email"),
                             rs.getString("password"));
                     return user;
@@ -99,6 +104,7 @@ public class UserDBStore {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     user = new User(rs.getInt("id"),
+                            rs.getString("name"),
                             rs.getString("email"),
                             rs.getString("password")
                     );

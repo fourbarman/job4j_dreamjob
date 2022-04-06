@@ -5,7 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.dreamjob.model.City;
+import ru.job4j.dreamjob.model.User;
 import ru.job4j.dreamjob.services.CityService;
+
+import javax.servlet.http.HttpSession;
 
 @ThreadSafe
 @Controller
@@ -17,13 +20,15 @@ public class CityController {
     }
 
     @GetMapping("/cities")
-    public String cities(Model model) {
+    public String cities(Model model, HttpSession session) {
+        getUserFromSession(model, session);
         model.addAttribute("cities", cityService.getAllCities());
         return "cities";
     }
 
     @GetMapping("/addCity")
-    public String addCity(Model model) {
+    public String addCity(Model model, HttpSession session) {
+        getUserFromSession(model, session);
         return "addCity";
     }
 
@@ -39,7 +44,8 @@ public class CityController {
     }
 
     @GetMapping("/formUpdateCity/{cityId}")
-    public String formUpdateCity(Model model, @PathVariable("cityId") int id) {
+    public String formUpdateCity(Model model, @PathVariable("cityId") int id, HttpSession session) {
+        getUserFromSession(model, session);
         model.addAttribute("city", cityService.findById(id));
         return "updateCity";
     }
@@ -54,5 +60,14 @@ public class CityController {
     public String createCity(@ModelAttribute City city) {
         cityService.add(city);
         return "redirect:/cities";
+    }
+
+    private void getUserFromSession(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            user = new User();
+            user.setName("Гость");
+        }
+        model.addAttribute("user", user);
     }
 }
