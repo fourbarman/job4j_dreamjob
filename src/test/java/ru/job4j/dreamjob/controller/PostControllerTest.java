@@ -55,4 +55,17 @@ public class PostControllerTest {
         verify(postService).add(input);
         assertThat(page, is("redirect:/posts"));
     }
+
+    @Test
+    public void whenAddPost() {
+
+    }
+    @Test
+    public void whenUpdatePost() {
+
+    }
+    @Test
+    public void whenSavePost() {
+
+    }
 }
